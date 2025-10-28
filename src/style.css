@@ -34,12 +34,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(32, 220, 161, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.7);
+  background: rgba(32, 220, 161, 0.7);
 }
 
 .dark ::-webkit-scrollbar-track {
@@ -56,7 +56,7 @@ body {
 
 /* 选择文本样式 */
 ::selection {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(32, 220, 161, 0.2);
   color: #333;
 }
 
@@ -68,7 +68,7 @@ body {
 /* 焦点样式 */
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #667eea;
+  outline: 2px solid #20dca1;
   outline-offset: 2px;
 }
 

@@ -2,9 +2,9 @@
   <div id="app">
     <header class="header">
       <div class="header-content">
-        <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem">
           <img src="/logo.svg" alt="logo" class="logo" />
-        <h1 class="title">AI 换衣空间</h1>
+          <h1 class="title">AI 换衣空间</h1>
         </div>
         <div class="header-controls">
           <button
@@ -47,65 +47,65 @@
 
           <!-- 中间上传区域 -->
           <div class="upload-section">
-          <div class="upload-card">
-            <h2 class="card-title">上传人物图像</h2>
-            <div
-              class="upload-area"
-              @click="triggerUpload('person')"
-              @drop="handleDrop($event, 'person')"
-              @dragover.prevent
-              @dragenter.prevent
-            >
-              <div v-if="!personImage" class="upload-placeholder">
-                <Upload class="upload-icon" />
-                <p>拖拽图片到此处，或点击选择</p>
-                <p class="upload-hint">支持 JPG、PNG 格式</p>
+            <div class="upload-card">
+              <h2 class="card-title">上传人物图像</h2>
+              <div
+                class="upload-area"
+                @click="triggerUpload('person')"
+                @drop="handleDrop($event, 'person')"
+                @dragover.prevent
+                @dragenter.prevent
+              >
+                <div v-if="!personImage" class="upload-placeholder">
+                  <Upload class="upload-icon" />
+                  <p>拖拽图片到此处，或点击选择</p>
+                  <p class="upload-hint">支持 JPG、PNG 格式</p>
+                </div>
+                <div v-else class="image-preview">
+                  <img :src="personImage" alt="人物图像" style="object-fit: contain" />
+                  <button class="remove-btn" @click.stop="removeImage('person')">
+                    <X class="icon" />
+                  </button>
+                </div>
               </div>
-              <div v-else class="image-preview">
-                <img :src="personImage" alt="人物图像" style="object-fit: contain;" />
-                <button class="remove-btn" @click.stop="removeImage('person')">
-                  <X class="icon" />
-                </button>
-              </div>
+              <input
+                ref="personInput"
+                type="file"
+                accept="image/*"
+                @change="handleFileSelect($event, 'person')"
+                style="display: none"
+              />
             </div>
-            <input
-              ref="personInput"
-              type="file"
-              accept="image/*"
-              @change="handleFileSelect($event, 'person')"
-              style="display: none"
-            />
-          </div>
 
-          <div class="upload-card">
-            <h2 class="card-title">上传服装图像</h2>
-            <div
-              class="upload-area"
-              @click="triggerUpload('clothes')"
-              @drop="handleDrop($event, 'clothes')"
-              @dragover.prevent
-              @dragenter.prevent
-            >
-              <div v-if="!clothesImage" class="upload-placeholder">
-                <Upload class="upload-icon" />
-                <p>拖拽图片到此处，或点击选择</p>
-                <p class="upload-hint">支持 JPG、PNG 格式</p>
+            <div class="upload-card">
+              <h2 class="card-title">上传服装图像</h2>
+              <div
+                class="upload-area"
+                @click="triggerUpload('clothes')"
+                @drop="handleDrop($event, 'clothes')"
+                @dragover.prevent
+                @dragenter.prevent
+              >
+                <div v-if="!clothesImage" class="upload-placeholder">
+                  <Upload class="upload-icon" />
+                  <p>拖拽图片到此处，或点击选择</p>
+                  <p class="upload-hint">支持 JPG、PNG 格式</p>
+                </div>
+                <div v-else class="image-preview">
+                  <img :src="clothesImage" alt="服装图像" style="object-fit: contain" />
+                  <button class="remove-btn" @click.stop="removeImage('clothes')">
+                    <X class="icon" />
+                  </button>
+                </div>
               </div>
-              <div v-else class="image-preview">
-                <img :src="clothesImage" alt="服装图像" style="object-fit: contain;" />
-                <button class="remove-btn" @click.stop="removeImage('clothes')">
-                  <X class="icon" />
-                </button>
-              </div>
+              <input
+                ref="clothesInput"
+                type="file"
+                accept="image/*"
+                @change="handleFileSelect($event, 'clothes')"
+                style="display: none"
+              />
             </div>
-            <input
-              ref="clothesInput"
-              type="file"
-              accept="image/*"
-              @change="handleFileSelect($event, 'clothes')"
-              style="display: none"
-            />
-          </div>
           </div>
         </div>
 
@@ -123,8 +123,6 @@
               </button>
             </div>
           </div>
-
-      
 
           <button class="generate-btn" :disabled="!canGenerate" @click="generateImage">
             <Loader2 v-if="isGenerating" class="icon spinning" />
@@ -386,7 +384,7 @@ const clearAll = () => {
 .title {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #20dca1 0%, #14b8a6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -441,8 +439,8 @@ const clearAll = () => {
 }
 
 .theme-toggle {
-  background: rgba(102, 126, 234, 0.1);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: rgba(32, 220, 161, 0.1);
+  border: 1px solid rgba(32, 220, 161, 0.2);
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
@@ -454,14 +452,14 @@ const clearAll = () => {
 }
 
 .theme-toggle:hover {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(32, 220, 161, 0.2);
   transform: scale(1.05);
 }
 
 .icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: #667eea;
+  color: #20dca1;
 }
 
 .dark .icon {
@@ -492,24 +490,24 @@ const clearAll = () => {
 }
 
 .slogan-card {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(32, 220, 161, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);
   backdrop-filter: blur(10px);
   border-radius: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  box-shadow: 0 8px 32px rgba(32, 220, 161, 0.15);
+  border: 1px solid rgba(32, 220, 161, 0.2);
   position: relative;
   overflow: hidden;
 }
 
 .slogan-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #20dca1 0%, #14b8a6 100%);
 }
 
 .dark .slogan-card {
@@ -531,7 +529,7 @@ const clearAll = () => {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #20dca1 0%, #14b8a6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -559,8 +557,8 @@ const clearAll = () => {
 }
 
 .slogan-line.highlight {
-  color: #667eea;
-  font-weight: 600;
+  color: #e89d3c;
+  font-weight: 700;
   font-size: 1.1rem;
   margin-top: 1rem;
 }
@@ -584,7 +582,7 @@ const clearAll = () => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #20dca1 0%, #14b8a6 100%);
   animation: pulse 2s infinite;
 }
 
@@ -632,7 +630,7 @@ const clearAll = () => {
 }
 
 .upload-area {
-  border: 2px dashed #667eea;
+  border: 2px dashed #20dca1;
   border-radius: 0.75rem;
   padding: 3rem 2rem;
   text-align: center;
@@ -645,8 +643,8 @@ const clearAll = () => {
 }
 
 .upload-area:hover {
-  border-color: #764ba2;
-  background: rgba(102, 126, 234, 0.05);
+  border-color: #14b8a6;
+  background: rgba(32, 220, 161, 0.05);
 }
 
 .upload-placeholder {
@@ -659,7 +657,7 @@ const clearAll = () => {
 .upload-icon {
   width: 3rem;
   height: 3rem;
-  color: #667eea;
+  color: #20dca1;
   opacity: 0.7;
 }
 
@@ -766,26 +764,26 @@ const clearAll = () => {
 
 .style-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid #667eea;
+  border: 1px solid #20dca1;
   background: transparent;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #667eea;
+  color: #20dca1;
   font-size: 0.875rem;
   position: relative;
 }
 
 .style-btn:hover {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(32, 220, 161, 0.1);
   transform: translateY(-1px);
 }
 
 .style-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #20dca1 0%, #14b8a6 100%);
   color: white;
   border-color: transparent;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(32, 220, 161, 0.3);
 }
 
 .part-btn {
@@ -826,7 +824,7 @@ const clearAll = () => {
 }
 
 .generate-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #20dca1 0%, #14b8a6 100%);
   border: none;
   border-radius: 0.75rem;
   padding: 1rem 2rem;
@@ -842,12 +840,16 @@ const clearAll = () => {
 
 .generate-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(32, 220, 161, 0.3);
 }
 
 .generate-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.generate-btn .icon {
+  color: white;
 }
 
 .spinning {

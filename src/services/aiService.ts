@@ -33,12 +33,12 @@ export class AIChangeClothesService {
 
       // 根据风格生成不同的提示词
       const getStylePrompt = (style: string) => {
-        const basePrompt = `将第一张图片（人物图像）中的人物替换为第二张图片（服装图像）中的服饰，注意：必须保持第一张图片人物的发型、脸型、身材比例不变，只能更换服装部分`;
+        const basePrompt = `请执行以下操作：首先，基于第二张图片（服装图像），精确抠出其中的服装物品（如T恤、裙子、裤子等），完全忽略该图片中的人物模型、背景及任何其他元素。然后，将第一张图片（人物图像）中人物当前所穿的服装，替换为上一步提取出的服装。必须保持第一张人物的发型、面容、身体姿态、身材比例和背景不变。最终效果应是仅更换了衣物，且新衣物应自然适配第一张人物的身形和姿态。`;
 
         switch (style) {
-          case 'sketch':
+          case "sketch":
             return `${basePrompt}，并将结果转换为手绘素描风格，黑白线条，简洁明快`;
-          case 'original':
+          case "original":
           default:
             return `${basePrompt}，保持原图风格和质感`;
         }
@@ -46,9 +46,9 @@ export class AIChangeClothesService {
 
       const resp = await generateSeedreamImageDirect({
         prompt: getStylePrompt(request.aspectRatio),
-        size: '2K',
-        response_format: 'b64_json',
-        sequential_image_generation: 'disabled',
+        size: "2K",
+        response_format: "b64_json",
+        sequential_image_generation: "disabled",
         stream: false,
         watermark: false,
         image: [request.personImage, request.clothesImage],
@@ -56,7 +56,7 @@ export class AIChangeClothesService {
 
       const first = resp?.data?.[0];
       if (!first?.b64_json) {
-        return { success: false, error: '生成失败，返回数据为空' };
+        return { success: false, error: "生成失败，返回数据为空" };
       }
       const dataUrl = `data:image/png;base64,${first.b64_json}`;
       return { success: true, resultImage: dataUrl };
@@ -152,32 +152,30 @@ export class AIChangeClothesService {
 export const aiChangeClothesService = new AIChangeClothesService();
 
 // ===== Doubao Seedream 图像生成（前端直连）=====
-export type SeedreamSize = '2K' | '1024x1024' | '512x512';
+export type SeedreamSize = "2K" | "1024x1024" | "512x512";
 
 export interface GenerateSeedreamParams {
   prompt: string;
   size?: SeedreamSize;
   model?: string;
-  sequential_image_generation?: 'disabled' | 'enabled';
-  response_format?: 'url' | 'b64_json';
+  sequential_image_generation?: "disabled" | "enabled";
+  response_format?: "url" | "b64_json";
   stream?: boolean;
   watermark?: boolean;
   image?: string | string[];
 }
 
-export async function generateSeedreamImageDirect(
-  params: GenerateSeedreamParams
-): Promise<{
+export async function generateSeedreamImageDirect(params: GenerateSeedreamParams): Promise<{
   model: string;
   created: number;
   data: { url?: string; b64_json?: string; size?: string }[];
 }> {
   const body = {
-    model: params.model ?? 'doubao-seedream-4-0-250828',
+    model: params.model ?? "doubao-seedream-4-0-250828",
     prompt: params.prompt,
-    size: params.size ?? '2K',
-    sequential_image_generation: params.sequential_image_generation ?? 'disabled',
-    response_format: params.response_format ?? 'url',
+    size: params.size ?? "2K",
+    sequential_image_generation: params.sequential_image_generation ?? "disabled",
+    response_format: params.response_format ?? "url",
     stream: params.stream ?? false,
     watermark: params.watermark ?? true,
     image: params.image,
@@ -186,9 +184,9 @@ export async function generateSeedreamImageDirect(
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 100000);
   try {
-    const r = await fetch('/api/seedream', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const r = await fetch("/api/seedream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
       signal: ctrl.signal,
     });
