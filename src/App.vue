@@ -2,7 +2,10 @@
   <div id="app">
     <header class="header">
       <div class="header-content">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <img src="/logo.svg" alt="logo" class="logo" />
         <h1 class="title">AI 换衣空间</h1>
+        </div>
         <div class="header-controls">
           <button
             class="clear-btn"
@@ -22,7 +25,28 @@
 
     <main class="main">
       <div class="container">
-        <div class="upload-section">
+        <div class="content-layout">
+          <!-- 左侧标语区域 -->
+          <div class="slogan-section">
+            <div class="slogan-card">
+              <div class="slogan-content">
+                <h2 class="slogan-title">AI 换衣助手</h2>
+                <div class="slogan-text">
+                  <p class="slogan-line">是嫌衣柜太挤，还是嫌钱包太鼓？</p>
+                  <p class="slogan-line">是怕卖家秀太美，还是怕买家秀太雷？</p>
+                  <p class="slogan-line highlight">管不住想买的手？先让AI替你瞅一瞅！</p>
+                </div>
+                <div class="slogan-decoration">
+                  <div class="decoration-dot"></div>
+                  <div class="decoration-dot"></div>
+                  <div class="decoration-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 中间上传区域 -->
+          <div class="upload-section">
           <div class="upload-card">
             <h2 class="card-title">上传人物图像</h2>
             <div
@@ -38,7 +62,7 @@
                 <p class="upload-hint">支持 JPG、PNG 格式</p>
               </div>
               <div v-else class="image-preview">
-                <img :src="personImage" alt="人物图像" />
+                <img :src="personImage" alt="人物图像" style="object-fit: contain;" />
                 <button class="remove-btn" @click.stop="removeImage('person')">
                   <X class="icon" />
                 </button>
@@ -68,7 +92,7 @@
                 <p class="upload-hint">支持 JPG、PNG 格式</p>
               </div>
               <div v-else class="image-preview">
-                <img :src="clothesImage" alt="服装图像" />
+                <img :src="clothesImage" alt="服装图像" style="object-fit: contain;" />
                 <button class="remove-btn" @click.stop="removeImage('clothes')">
                   <X class="icon" />
                 </button>
@@ -81,6 +105,7 @@
               @change="handleFileSelect($event, 'clothes')"
               style="display: none"
             />
+          </div>
           </div>
         </div>
 
@@ -99,19 +124,7 @@
             </div>
           </div>
 
-          <div class="part-controls">
-            <span class="control-label">部位</span>
-            <div class="part-buttons">
-              <button
-                v-for="part in parts"
-                :key="part.value"
-                :class="['part-btn', { active: selectedParts.includes(part.value) }]"
-                @click="togglePart(part.value)"
-              >
-                {{ part.label }}
-              </button>
-            </div>
-          </div>
+      
 
           <button class="generate-btn" :disabled="!canGenerate" @click="generateImage">
             <Loader2 v-if="isGenerating" class="icon spinning" />
@@ -365,6 +378,11 @@ const clearAll = () => {
   align-items: center;
 }
 
+.logo {
+  width: 32px;
+  height: 32px;
+}
+
 .title {
   font-size: 2rem;
   font-weight: 700;
@@ -455,16 +473,137 @@ const clearAll = () => {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.content-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.slogan-section {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.slogan-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.slogan-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.dark .slogan-card {
+  background: linear-gradient(135deg, rgba(168, 237, 234, 0.1) 0%, rgba(254, 214, 227, 0.1) 100%);
+  border: 1px solid rgba(168, 237, 234, 0.2);
+  box-shadow: 0 8px 32px rgba(168, 237, 234, 0.15);
+}
+
+.dark .slogan-card::before {
+  background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.slogan-content {
+  position: relative;
+  z-index: 1;
+}
+
+.slogan-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+.dark .slogan-title {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slogan-text {
+  margin-bottom: 1.5rem;
+}
+
+.slogan-line {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0.75rem 0;
+  color: #4a5568;
+  font-weight: 500;
+  text-align: center;
+}
+
+.slogan-line.highlight {
+  color: #667eea;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.dark .slogan-line {
+  color: #a0aec0;
+}
+
+.dark .slogan-line.highlight {
+  color: #a8edea;
+}
+
+.slogan-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.decoration-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  animation: pulse 2s infinite;
+}
+
+.decoration-dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.decoration-dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.dark .decoration-dot {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
 }
 
 .upload-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  margin-bottom: 2rem;
 }
 
 .upload-card {
@@ -853,6 +992,32 @@ const clearAll = () => {
 }
 
 @media (max-width: 768px) {
+  .content-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .slogan-section {
+    position: static;
+    order: -1;
+  }
+
+  .slogan-card {
+    padding: 1.5rem;
+  }
+
+  .slogan-title {
+    font-size: 1.25rem;
+  }
+
+  .slogan-line {
+    font-size: 0.9rem;
+  }
+
+  .slogan-line.highlight {
+    font-size: 1rem;
+  }
+
   .upload-section {
     grid-template-columns: 1fr;
   }
