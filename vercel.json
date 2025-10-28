@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/seedream.ts": {
+      "maxDuration": 100
+    }
+  }
+}
