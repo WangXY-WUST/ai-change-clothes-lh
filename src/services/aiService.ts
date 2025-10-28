@@ -184,7 +184,7 @@ export async function generateSeedreamImageDirect(params: GenerateSeedreamParams
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 100000);
   try {
-    const r = await fetch("/api/seedream", {
+    const r = await fetch("https://ark.cn-beijing.volces.com", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
