@@ -37,7 +37,7 @@ export class AIChangeClothesService {
 
         switch (style) {
           case "sketch":
-            return `${basePrompt}，并将结果转换为手绘素描风格，黑白线条，简洁明快`;
+            return `${basePrompt}，并将替换完成的图片素描化`;
           case "original":
           default:
             return `${basePrompt}，保持原图风格和质感`;

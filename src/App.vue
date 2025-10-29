@@ -107,6 +107,40 @@
               />
             </div>
           </div>
+
+          <!-- 右侧提示区域 -->
+          <div class="tips-section">
+            <div class="tips-card">
+              <div class="tips-content">
+                <h2 class="tips-title">上传小贴士</h2>
+                <div class="tips-text">
+                  <div class="tips-item">
+                    <div class="tips-icon">👤</div>
+                    <p class="tips-line">第一张图建议只上传人像，避免背景干扰</p>
+                  </div>
+                  <div class="tips-item">
+                    <div class="tips-icon">👕</div>
+                    <p class="tips-line">第二张图建议只上传服装，效果更佳</p>
+                  </div>
+                  <div class="tips-item">
+                    <div class="tips-icon">⚠️</div>
+                    <p class="tips-line highlight">
+                      请避免上传过于暴露的服装图片(比基尼，露腰，透视，镂空等)
+                    </p>
+                  </div>
+                  <div class="tips-item">
+                    <div class="tips-icon">✨</div>
+                    <p class="tips-line">清晰度越高，换衣效果越好</p>
+                  </div>
+                </div>
+                <div class="tips-decoration">
+                  <div class="decoration-dot"></div>
+                  <div class="decoration-dot"></div>
+                  <div class="decoration-dot"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="controls-section">
@@ -163,6 +197,38 @@
             </div>
           </div>
         </div>
+
+        <!-- 效果展示区域 -->
+        <div class="gallery-section">
+          <div class="gallery-card">
+            <h2 class="card-title">效果展示</h2>
+            <p class="gallery-subtitle">
+              看看其他用户的精彩换衣效果（均已取得本人同意进行展示，下载后请勿用于商业用途）
+            </p>
+            <div class="gallery-grid">
+              <div
+                v-for="(image, index) in galleryImages"
+                :key="index"
+                class="gallery-item"
+                @click="viewImage(image)"
+              >
+                <div class="gallery-image">
+                  <img :src="image.url" :alt="image.title" />
+                  <div class="gallery-overlay">
+                    <div class="gallery-info">
+                      <h3 class="gallery-title">{{ image.title }}</h3>
+                      <p class="gallery-desc">{{ image.description }}</p>
+                    </div>
+                    <button class="gallery-download-btn" @click.stop="downloadGalleryImage(image)">
+                      <Download class="icon" />
+                      下载图片
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -172,6 +238,9 @@
 import { ref, computed } from "vue";
 import { Upload, X, Sun, Moon, Sparkles, Loader2, Download, AlertCircle } from "lucide-vue-next";
 import { aiChangeClothesService, type ChangeClothesRequest } from "./services/aiService";
+import a from "./assets/jl-qr.jpeg";
+import b from "./assets/beach.jpg";
+import c from "./assets/wenjiexiaoguo.jpg";
 
 const isDark = ref(false);
 const personImage = ref<string | null>(null);
@@ -185,6 +254,25 @@ const successMessage = ref<string | null>(null);
 
 const personInput = ref<HTMLInputElement>();
 const clothesInput = ref<HTMLInputElement>();
+
+// 效果展示图片数据
+const galleryImages = ref([
+  {
+    url: a,
+    title: "嘉伦斑马素描风",
+    description: "专业职场造型，展现自信魅力",
+  },
+  {
+    url: b,
+    title: "诚哥休闲度假风",
+    description: "轻松自在的度假穿搭",
+  },
+  {
+    url: c,
+    title: "文姐优雅晚礼服",
+    description: "正式场合的优雅选择",
+  },
+]);
 
 const styles = [
   { label: "原图", value: "original", description: "保持原图风格" },
@@ -323,6 +411,27 @@ const downloadImage = () => {
   const link = document.createElement("a");
   link.href = resultImage.value;
   link.download = `ai-change-clothes-${Date.now()}.jpg`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+// 查看图片详情
+const viewImage = (image: any) => {
+  console.log("查看图片:", image);
+  // 这里可以添加图片查看逻辑，比如打开模态框或跳转到详情页
+};
+
+// 下载展示图片
+const downloadGalleryImage = (image: any) => {
+  if (!image.url || image.url === "a" || image.url === "b" || image.url === "c") {
+    console.log("这是占位符图片，无法下载");
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.href = image.url;
+  link.download = `${image.title}-${Date.now()}.jpg`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -478,12 +587,18 @@ const clearAll = () => {
 
 .content-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 280px 1fr 280px;
   gap: 2rem;
   margin-bottom: 2rem;
 }
 
 .slogan-section {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.tips-section {
   position: sticky;
   top: 2rem;
   height: fit-content;
@@ -520,7 +635,43 @@ const clearAll = () => {
   background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
 }
 
+.tips-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.tips-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6 0%, #9333ea 100%);
+}
+
+.dark .tips-card {
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(147, 51, 234, 0.2);
+  box-shadow: 0 8px 32px rgba(147, 51, 234, 0.15);
+}
+
+.dark .tips-card::before {
+  background: linear-gradient(90deg, #9333ea 0%, #3b82f6 100%);
+}
+
 .slogan-content {
+  position: relative;
+  z-index: 1;
+}
+
+.tips-content {
   position: relative;
   z-index: 1;
 }
@@ -543,8 +694,64 @@ const clearAll = () => {
   background-clip: text;
 }
 
+.tips-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+.dark .tips-title {
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .slogan-text {
   margin-bottom: 1.5rem;
+}
+
+.tips-text {
+  margin-bottom: 1.5rem;
+}
+
+.tips-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.tips-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.tips-line {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.tips-line.highlight {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.dark .tips-line {
+  color: #a0aec0;
+}
+
+.dark .tips-line.highlight {
+  color: #f87171;
 }
 
 .slogan-line {
@@ -572,6 +779,13 @@ const clearAll = () => {
 }
 
 .slogan-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tips-decoration {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
@@ -993,6 +1207,141 @@ const clearAll = () => {
   height: 1rem;
 }
 
+/* 效果展示区域样式 */
+.gallery-section {
+  margin-top: 2rem;
+}
+
+.gallery-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .gallery-card {
+  background: rgba(26, 26, 46, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin: 0.5rem 0 2rem 0;
+  text-align: center;
+}
+
+.dark .gallery-subtitle {
+  color: #a0aec0;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.gallery-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+}
+
+.gallery-image {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #f5f5f5;
+  aspect-ratio: 4/5;
+}
+
+.dark .gallery-image {
+  background: #2d3748;
+}
+
+.gallery-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image img {
+  transform: scale(1.05);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-info {
+  margin-top: auto;
+}
+
+.gallery-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.gallery-desc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.gallery-download-btn {
+  background: rgba(32, 220, 161, 0.9);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  align-self: flex-start;
+}
+
+.gallery-download-btn:hover {
+  background: rgba(32, 220, 161, 1);
+  transform: scale(1.05);
+}
+
+.gallery-download-btn .icon {
+  color: white;
+  width: 1rem;
+  height: 1rem;
+}
+
 @media (max-width: 768px) {
   .content-layout {
     grid-template-columns: 1fr;
@@ -1004,11 +1353,24 @@ const clearAll = () => {
     order: -1;
   }
 
+  .tips-section {
+    position: static;
+    order: 1;
+  }
+
   .slogan-card {
     padding: 1.5rem;
   }
 
+  .tips-card {
+    padding: 1.5rem;
+  }
+
   .slogan-title {
+    font-size: 1.25rem;
+  }
+
+  .tips-title {
     font-size: 1.25rem;
   }
 
@@ -1018,6 +1380,10 @@ const clearAll = () => {
 
   .slogan-line.highlight {
     font-size: 1rem;
+  }
+
+  .tips-line {
+    font-size: 0.85rem;
   }
 
   .upload-section {
@@ -1054,6 +1420,32 @@ const clearAll = () => {
 
   .title {
     font-size: 1.5rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .gallery-card {
+    padding: 1.5rem;
+  }
+
+  .gallery-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .gallery-title {
+    font-size: 1.1rem;
+  }
+
+  .gallery-desc {
+    font-size: 0.85rem;
+  }
+
+  .gallery-download-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
   }
 }
 </style>
