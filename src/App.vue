@@ -212,6 +212,27 @@
                 class="gallery-item"
                 @click="viewImage(image)"
               >
+                <!-- A图和B图展示区域 -->
+                <div class="ab-images-section">
+                  <div class="ab-images-container">
+                    <div class="ab-image-item">
+                      <div class="ab-image-container">
+                        <span class="ab-label">A图</span>
+                        <img :src="image.imageA" alt="A图" class="ab-image" />
+                      </div>
+                    </div>
+                    <div class="plus-sign">+</div>
+                    <div class="ab-image-item">
+                      <div class="ab-image-container">
+                        <span class="ab-label">B图</span>
+                        <img :src="image.imageB" alt="B图" class="ab-image" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="equals-sign">=</div>
+                </div>
+
+                <!-- 效果图展示区域 -->
                 <div class="gallery-image">
                   <img :src="image.url" :alt="image.title" />
                   <div class="gallery-overlay">
@@ -238,9 +259,20 @@
 import { ref, computed } from "vue";
 import { Upload, X, Sun, Moon, Sparkles, Loader2, Download, AlertCircle } from "lucide-vue-next";
 import { aiChangeClothesService, type ChangeClothesRequest } from "./services/aiService";
+// @ts-ignore
 import a from "./assets/jl-qr.jpeg";
+// @ts-ignore
 import b from "./assets/beach.jpg";
+// @ts-ignore
 import c from "./assets/wenjiexiaoguo.jpg";
+// @ts-ignore
+import d from "./assets/zqr.jpeg";
+// @ts-ignore
+import e from "./assets/jl.jpeg";
+import f from "./assets/zc.jpeg";
+import g from "./assets/g.png";
+import h from "./assets/h.jpg";
+import i from "./assets/i.png";
 
 const isDark = ref(false);
 const personImage = ref<string | null>(null);
@@ -261,16 +293,22 @@ const galleryImages = ref([
     url: a,
     title: "嘉伦斑马素描风",
     description: "专业职场造型，展现自信魅力",
+    imageA: e, // A图占位符
+    imageB: d, // B图占位符
   },
   {
     url: b,
     title: "诚哥休闲度假风",
     description: "轻松自在的度假穿搭",
+    imageA: f, // A图占位符
+    imageB: g, // B图占位符
   },
   {
     url: c,
     title: "文姐优雅晚礼服",
     description: "正式场合的优雅选择",
+    imageA: h, // A图占位符
+    imageB: i, // B图占位符
   },
 ]);
 
@@ -1239,7 +1277,7 @@ const clearAll = () => {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1.5rem;
   margin-top: 1rem;
 }
@@ -1247,10 +1285,108 @@ const clearAll = () => {
 .gallery-item {
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .gallery-item:hover {
   transform: translateY(-4px);
+}
+
+/* A图和B图展示区域样式 */
+.ab-images-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .ab-images-section {
+  background: rgba(26, 26, 46, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ab-images-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ab-image-item {
+  flex: 1;
+  min-width: 80px;
+}
+
+.ab-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8f9fa;
+  border: 2px solid #20dca1;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  min-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.dark .ab-image-container {
+  background: #2d3748;
+  border-color: #a8edea;
+}
+
+.ab-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #20dca1;
+  text-align: center;
+}
+
+.dark .ab-label {
+  color: #a8edea;
+}
+
+.ab-image {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.ab-image-container:hover .ab-image {
+  transform: scale(1.05);
+}
+
+.plus-sign {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #20dca1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .plus-sign {
+  color: #a8edea;
+}
+
+.equals-sign {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #20dca1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .equals-sign {
+  color: #a8edea;
 }
 
 .gallery-image {
@@ -1446,6 +1582,39 @@ const clearAll = () => {
   .gallery-download-btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.85rem;
+  }
+
+  .ab-images-section {
+    padding: 0.75rem;
+  }
+
+  .ab-images-container {
+    gap: 0.75rem;
+  }
+
+  .ab-image-item {
+    min-width: 70px;
+  }
+
+  .ab-image-container {
+    padding: 0.25rem;
+    min-height: 80px;
+  }
+
+  .ab-label {
+    font-size: 0.7rem;
+  }
+
+  .ab-image {
+    height: 60px;
+  }
+
+  .plus-sign {
+    font-size: 1.25rem;
+  }
+
+  .equals-sign {
+    font-size: 1rem;
   }
 }
 </style>
